@@ -1,0 +1,28 @@
+services:
+  app:
+    build: ./app
+    ports: ["8000:8000", "9464:9464"]
+  carga:
+    build: ./app
+    command: ["python", "carga.py"]
+    depends_on: [app]
+  prometheus:
+    image: prom/prometheus:v3.15.1
+    ports: ["9090:9090"]
+    volumes: ["./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro"]
+  grafana:
+    image: grafana/grafana:13.1.10
+    ports: ["3000:3000"]
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+    depends_on: [prometheus]
+  status:
+    image: louislam/uptime-kuma:2.5.11
+    ports: ["3001:3001"]
+    volumes: ["status-data:/app/data"]
+volumes:
+  status-data:
