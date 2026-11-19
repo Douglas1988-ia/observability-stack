@@ -113,9 +113,18 @@ O `golden-signals.json` é provisionado na pasta **Observability** do Grafana. E
 
 ## Evidências
 
-Os prints ficam em `aula-1/prints/`:
+### Os 5 containers da stack em execução
+![Containers da aula-1 no Docker Desktop](prints/docker-containers.png)
 
-- [ ] `docker compose ps` com os 5 serviços
-- [ ] Prometheus → Status → Target health (`loja-api` UP)
-- [ ] Grafana → dashboard *Loja API · 4 Golden Signals* durante o game day
-- [ ] Status page `/status/loja` com o Checkout vermelho e o incidente publicado
+### Prometheus: alvos `loja-api` e `prometheus` UP
+![Prometheus Target health](prints/prometheus-targets.png)
+
+### Grafana: dashboard dos 4 golden signals (última 1 hora)
+De 22:08 a 22:13 estão as 4 rodadas do game day (1.6): o pico de latência, o aumento de erros e o pico de CPU com cerca de 100 requisições em andamento. A partir de 22:18 aparece a simulação de Black Friday do exercício 1.3 (+2,5 s de latência e 30% de erro).
+
+![Dashboard Loja API · 4 Golden Signals](prints/grafana-dashboard.png)
+
+### Status page `/status/loja` durante a Black Friday
+O incidente está publicado e a página mostra "Serviço parcialmente degradado": o Site ficou 100% UP, o Catálogo oscilou e o Checkout ficou fora por timeout. Depois a API foi normalizada e o incidente foi marcado como resolvido.
+
+![Status page da Loja com incidente](prints/status-page.png)
